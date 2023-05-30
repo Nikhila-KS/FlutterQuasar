@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:app_2_quiz_app/quiz.dart';
 
 
 class Startscreen extends StatelessWidget {
-  const Startscreen({super.key});
+  const Startscreen(this.StartQuiz,{super.key});
+
+  final void Function() StartQuiz;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +21,9 @@ class Startscreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center ,
         children: [
-        Image.asset('assets/images/quiz-logo.png',width: 200,),
+        Image.asset('assets/images/quiz-logo.png',width: 200,color: Color.fromARGB(210, 255, 255, 255),),
         const SizedBox(
-          height: 20,
+          height: 40,
         ),
         const Text(
           "Learn Flutter the fun Way",
@@ -30,8 +33,9 @@ class Startscreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15,),
-        ElevatedButton(
-          onPressed: () {}, 
+        ElevatedButton.icon(
+          // onPressed: Switchscreen(), 
+          onPressed: StartQuiz,
           style: ElevatedButton.styleFrom(       // simple path
             alignment:Alignment.center,
             backgroundColor: const Color.fromARGB(255, 15, 108, 214),
@@ -42,7 +46,8 @@ class Startscreen extends StatelessWidget {
             // backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 15, 108, 214)),
             // shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 24, 3, 66))
           //    ),
-              child: const Text("Start"),
+              label: const Text("Start"),
+              icon: Icon(Icons.arrow_forward_ios_rounded),
           ),
       ]),
     );
