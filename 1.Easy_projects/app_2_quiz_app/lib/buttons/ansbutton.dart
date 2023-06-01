@@ -8,13 +8,20 @@ class AnsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onTap, 
-      child: Text(anstext),
+      onPressed: onTap,
+
       style: ElevatedButton.styleFrom(
         backgroundColor:Colors.blueAccent,
         foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 60), 
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 60), 
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
+
+        // minimumSize: const Size(250,40),
+        // maximumSize: const Size(750,50),
+        ), 
+      child: Text(anstext,textAlign: TextAlign.center,),
       );
   }
 }

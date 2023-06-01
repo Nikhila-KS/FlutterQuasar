@@ -1,6 +1,8 @@
 import 'package:app_2_quiz_app/buttons/ansbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import 'data/questions.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({super.key});
@@ -10,21 +12,69 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  var currentquestionindex ;
+  
+  @override
+  void initState() {
+    currentquestionindex = 0;
+    super.initState();
+  }
+  void answerquestion(){
+    setState(() {
+      currentquestionindex=currentquestionindex+1%questions.length;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("ques", style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),),
-        const SizedBox(height: 30,),
-        AnsButton(anstext:'1', onTap: (){}),
-        const SizedBox(height: 20,),
-        AnsButton(anstext:'2', onTap: (){}),
-        const SizedBox(height: 20,),
-        AnsButton(anstext:'3', onTap: (){}),
-        const SizedBox(height: 20,),
-        AnsButton(anstext:'4', onTap: (){}),
-      ],
+    final currentques= questions[currentquestionindex];
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            currentques.question,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.lato(
+              textStyle: const TextStyle(
+                fontSize:22,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 170, 182, 241),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+
+
+          ...currentques.getSuffledlist().map((answer){
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AnsButton(anstext: answer, onTap: answerquestion),
+                const SizedBox(height: 15,)
+              ],
+            );
+          }),
+
+          // AnsButton(anstext: currentques.ans[0], onTap: () {}), // hard coded
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // AnsButton(anstext: currentques.ans[1], onTap: () {}),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // AnsButton(anstext: currentques.ans[2], onTap: () {}),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // AnsButton(anstext: currentques.ans[3], onTap: () {}),
+        ],
+      ),
     );
   }
 }

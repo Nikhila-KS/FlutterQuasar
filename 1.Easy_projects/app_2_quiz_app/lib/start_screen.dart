@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_2_quiz_app/quiz.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class Startscreen extends StatelessWidget {
@@ -21,16 +21,23 @@ class Startscreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center ,
         children: [
-        Image.asset('assets/images/quiz-logo.png',width: 200,color: Color.fromARGB(210, 255, 255, 255),),
+        Image.asset('assets/images/quiz-logo.png',width: 200,color: const Color.fromARGB(210, 255, 255, 255),),
         const SizedBox(
           height: 40,
         ),
-        const Text(
+        Text(
           "Learn Flutter the fun Way",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
+           style: GoogleFonts.lato(
+              textStyle: const TextStyle(
+                fontSize:24,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 218, 222, 239),
+              ),
+            ),
+          // style: TextStyle(
+          //   color: Colors.white,
+          //   fontSize: 20,
+          // ),
         ),
         const SizedBox(height: 15,),
         ElevatedButton.icon(
@@ -47,7 +54,7 @@ class Startscreen extends StatelessWidget {
             // shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 24, 3, 66))
           //    ),
               label: const Text("Start"),
-              icon: Icon(Icons.arrow_forward_ios_rounded),
+              icon: const Icon(Icons.arrow_forward_ios_rounded),
           ),
       ]),
     );
