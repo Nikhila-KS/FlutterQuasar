@@ -1,9 +1,11 @@
-import 'package:app_2_quiz_app/question_screen.dart';
-import 'package:app_2_quiz_app/start_screen.dart';
+import 'package:app_2_quiz_app/data/questions.dart';
+import 'package:app_2_quiz_app/screens/question_screen.dart';
+import 'package:app_2_quiz_app/screens/result_screen.dart';
+import 'package:app_2_quiz_app/screens/start_screen.dart';
 import 'package:flutter/material.dart';
 
 class Quiz extends StatefulWidget{
-  Quiz({super.key});
+  const Quiz({super.key});
 
   @override
   State<Quiz> createState(){
@@ -12,20 +14,42 @@ class Quiz extends StatefulWidget{
 }
 
 class _QuizState extends State<Quiz>{
-  // Widget? activeScreen;
-  var activeScreen='startscreen';
+  Widget? activeScreen;
+  // var activeScreen='startscreen'; // another way to do it
+  List<String> ans=[];
   @override
-  // void initState() {
-  //   activeScreen=  Startscreen(Switchscreen);
-  //   super.initState();
-  // }
+  void initState() {
+    activeScreen=  Startscreen(Switchscreen);
+    super.initState();
+  }
   
   void Switchscreen(){
-    // activeScreen= const QuestionScreen();
-     activeScreen='quizscreen';
-    setState(() {
-      
+    activeScreen= QuestionScreen(onSelectans: onChoose,);
+    //  activeScreen='quizscreen';  // another way to do it
+    setState(() { 
     });
+  }
+
+  void RestartQuiz(){
+    activeScreen=  Startscreen(Switchscreen);
+    // activeScreen='startscreen';  // another way to do it
+    setState(() { 
+      ans=[];
+    });
+  }
+
+  void onChoose(String answer){
+    ans.add(answer);
+
+    
+
+    if(ans.length==questions.length){
+      setState(() {
+        activeScreen=  ResultScreen(chosenAns: ans,restartQuiz: RestartQuiz);
+        // activeScreen='resultscreen';
+        ans=[];
+      });
+    }
   }
 
   @override
@@ -46,9 +70,12 @@ class _QuizState extends State<Quiz>{
           end: Alignment.bottomLeft,
         ),
       ),
-          child: activeScreen=='startscreen'
-          ?Startscreen(Switchscreen)
-          :QuestionScreen(),
+      child: activeScreen,
+          // child: activeScreen=='startscreen'
+          //         ?Startscreen(Switchscreen)  // a pointer to the function is passed to the constructor not the function itself
+          //         :(activeScreen=='quizscreen'
+          //         ?QuestionScreen(onSelectans: onChoose,):const ResultScreen()
+          //         ),
         ) ,
       ),
     );
