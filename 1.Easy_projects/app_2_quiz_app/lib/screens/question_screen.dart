@@ -2,10 +2,11 @@ import 'package:app_2_quiz_app/buttons/ansbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'data/questions.dart';
+import '../data/questions.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({super.key});
+  const QuestionScreen({super.key, required this.onSelectans});
+  final void Function(String answer) onSelectans;
 
   @override
   State<QuestionScreen> createState() => _QuestionScreenState();
@@ -19,9 +20,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
     currentquestionindex = 0;
     super.initState();
   }
-  void answerquestion(){
+  void answerquestion(String selectedAnswer){
     setState(() {
-      currentquestionindex=currentquestionindex+1%questions.length;
+      currentquestionindex++;
+      widget.onSelectans(selectedAnswer);
     });
   }
   
@@ -54,7 +56,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                AnsButton(anstext: answer, onTap: answerquestion),
+                AnsButton(
+                  anstext: answer, 
+                  onTap: (){
+                    answerquestion(answer);  // anonymous function declaration
+                  }
+                  ),
                 const SizedBox(height: 15,)
               ],
             );

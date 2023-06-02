@@ -1,9 +1,9 @@
 import 'package:app_2_quiz_app/quiz.dart';
-import 'package:app_2_quiz_app/start_screen.dart';
+import 'package:app_2_quiz_app/screens/start_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Quiz();
+    return const Quiz();
   }
 }
 
