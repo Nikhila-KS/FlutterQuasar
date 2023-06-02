@@ -1,6 +1,16 @@
-# app_2_quiz_app
+# Quiz App
 
-A new Flutter project.
+<img width="226" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/396b8096-4b6e-49c6-abef-003b81af668e">
+--
+<img width="223" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/39ecff9d-bcb8-408f-8c2c-f87b18d1b487">
+--
+<img width="224" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/e77f5d9e-1a6d-4abc-bd75-3f8885b6adfd">
+
+
+## Screens
+1. Start screen
+2. Question screen
+3. Result screen 
 
 ## Getting Started
 
