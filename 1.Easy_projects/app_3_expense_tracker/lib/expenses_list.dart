@@ -9,8 +9,7 @@ class ExpensesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-
-      itemCount: 1,
+      itemCount: expenses.length,
       itemBuilder: (context, index) => ListTile(
         title: Text(expenses[index].title.toString()),
         subtitle: Text(expenses[index].category.toString()),
