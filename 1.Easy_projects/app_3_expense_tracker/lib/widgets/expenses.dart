@@ -23,11 +23,23 @@ class _ExpensesState extends State<Expenses> {
       category: Category.leisure,
     ),
   ];
+
+  void _openAddExpenseOverlay(){
+  //....
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expense Tracker'),
+        actions: [
+          IconButton(
+            onPressed: _openAddExpenseOverlay, // it is a pointer, when we dont want to execure the function we just want to use it as a value for onPressed
+            icon: const Icon(Icons.add),
+            ),
+        ],
+      ),
       body: Column(
-        
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           const Text('chart'),
