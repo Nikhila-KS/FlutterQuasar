@@ -21,7 +21,14 @@ class ExpensesList extends StatelessWidget {
           onRemoveExpense(expenses[index]);
         }),
         // ((direction) => onRemoveExpense(expenses[index])),  // alternative way of writing the above line
-        
+
+        background: Container(
+          color: Theme.of(context).colorScheme.error.withOpacity(0.1),
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 4),
+          child: const Icon(Icons.delete),
+        ),
 
         child: ExpenseItem(e: expenses[index],),
         ),
