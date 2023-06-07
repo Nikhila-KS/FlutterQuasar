@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:app_3_expense_tracker/models/expense.dart';
+
+final formatter= DateFormat.yMd();
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key,required this.addExpense});
+  final void Function(Expense e) addExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -14,10 +19,59 @@ class _NewExpenseState extends State<NewExpense> {
   // }
   final _titlecontroller = TextEditingController();
   final _amountcontroller = TextEditingController();
-  void _presentDatePicker(){
+  DateTime? _selectedDate;
+  Category _selectedCategory = Category.leisure;
+  
+  void _presentDatePicker() async{
     final now= DateTime.now();
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(now.year-2,now.month,1), lastDate: DateTime(now.year+2,now.month,now.day));
+
+    final pickedDate = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(),
+       firstDate: DateTime(now.year-2,now.month,1),
+        lastDate: DateTime(now.year+2,now.month,now.day)
+        );
+        // .then((value) => (){}); // one way if using the future value
+        setState(() {
+          _selectedDate = pickedDate;
+        });
   }
+
+  void _submitExpenseData(){
+
+    final enteredAmound = double.tryParse(_amountcontroller.text);
+    final isAmoundInValid = enteredAmound==null || enteredAmound <=0;
+    final enteredTitle = _titlecontroller.text;
+    if(_titlecontroller.text.trim().isEmpty || isAmoundInValid || _selectedDate==null){
+      showDialog(
+        context: context, 
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text('Please check your input'),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(ctx).pop();
+              }, 
+              child: const Text('Okay')
+              )
+          ],
+        ),
+        );
+        return;
+    }
+    widget.addExpense(
+      Expense(
+      amount :enteredAmound,
+      title: enteredTitle,
+      date: _selectedDate!,
+      category: _selectedCategory,
+      )
+    );
+    Navigator.of(context).pop();
+    
+  }
+
   @override
   void dispose() {
     _titlecontroller.dispose();
@@ -54,7 +108,7 @@ class _NewExpenseState extends State<NewExpense> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text('Select Date'),
+                      Text(_selectedDate==null?'No Date': formatter.format(_selectedDate!)),
                       IconButton(
                         onPressed: _presentDatePicker, 
                         icon: const Icon(Icons.calendar_month_rounded)
@@ -66,10 +120,29 @@ class _NewExpenseState extends State<NewExpense> {
           ),
           
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values.map(
+                  (category) => DropdownMenuItem(
+                    value: category,
+                    child:Text(category.name.toUpperCase()),
+                    ),
+                  ).toList(), 
+                
+                onChanged: (value){
+                  if(value==null){
+                    return;
+                  } 
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                }
+              ),
+              const Spacer(),
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -80,8 +153,9 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               ElevatedButton(
                 onPressed: (() {
-                  print(
-                      "${_titlecontroller.text}--->${_amountcontroller.text}");
+                  _submitExpenseData();
+                  // print(
+                  //     "${_titlecontroller.text}--->${_amountcontroller.text}--->${_selectedDate.toString()}--->");
                 }),
                 child: const Text("save"),
               ),
