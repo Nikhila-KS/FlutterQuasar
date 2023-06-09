@@ -6,7 +6,7 @@
 <img width="177" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/4d0023d8-03a9-4fc5-9254-0a1979f8bdbb">
 <img width="176" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/3469136c-3e2d-4167-9ff5-0a1a4a040d1a">
 <img width="176" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/804bffea-10bc-4fd8-9dca-c1f2f76cec77">
-Last ss - Swipe and delete feature
+<br>Last ss - Swipe and delete feature
 
 ### Dark Mode -
 <img width="175" alt="image" src="https://github.com/Nikhila-KS/FlutterQuasar/assets/100426366/08cc6e00-a2b7-44a6-98d9-0a521b8440d2">
