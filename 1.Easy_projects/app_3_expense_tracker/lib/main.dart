@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
           
 
         ),
-        themeMode: ThemeMode.dark, 
+        themeMode: ThemeMode.light, 
       home: const Expenses(),
       );
   }

@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +41,9 @@ class ExpenseBucket{
     required this.category,
     required this.expenses,
   });
-  ExpenseBucket.forCategory(List<Expense>allExpense, this.category): expenses = allExpense.where((e) => e.category == category).toList(); 
+
+  ExpenseBucket.forCategory(List<Expense>allExpense,     /// second constructor
+  this.category): expenses = allExpense.where((e) => e.category == category).toList(); // this constructor is used to filter the expenses based on category
 
   final Category category;
   final List<Expense> expenses;
