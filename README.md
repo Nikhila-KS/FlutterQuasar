@@ -4,7 +4,7 @@
 
 ## 💙Index
 ### Easy projects -
-1] Roll dice app
-2] Simple Quiz app
-3] Expense Tracker app
+1] Roll dice app <br>
+2] Simple Quiz app <br>
+3] Expense Tracker app <br>
 
