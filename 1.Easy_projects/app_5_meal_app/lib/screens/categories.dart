@@ -11,7 +11,7 @@ class CategoriesScreen extends StatelessWidget {
     final filteredMeals=dummyMeals.where((meal) => meal.categories.contains(category.id)).toList();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) =>  MealsScreen(
+        builder: (ctx) =>  MealsScreen(  // it acts as a loop and returns a list of meals
           title:  category.title, 
           meals:filteredMeals,
           ),
