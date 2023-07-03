@@ -1,6 +1,7 @@
 import 'package:app_4_meal_app/models/meal.dart';
 import 'package:app_4_meal_app/screens/categories.dart';
 import 'package:app_4_meal_app/screens/meals.dart';
+import 'package:app_4_meal_app/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -14,13 +15,30 @@ class _TabsScreenState extends State<TabsScreen> {
   int selectedPageIndex = 0;
   final List<Meal> _favouriteMeals = [];
 
+  void _showInfoMessageSnackbar(String message){
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   void toggleMealFavouriteStatus(Meal meal){
     final isExisting = _favouriteMeals.contains(meal);
 
     if(isExisting){
-      _favouriteMeals.remove(meal);
+      setState(() {
+        _favouriteMeals.remove(meal);
+       _showInfoMessageSnackbar('Removed from favourites');
+      });
+     
     }else{
-      _favouriteMeals.add(meal);
+      setState(() {
+        _favouriteMeals.add(meal);
+      });
+      _showInfoMessageSnackbar('Added to favourites');
     }
   }
 
@@ -30,22 +48,26 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreen(String identifier){
+    if(identifier==)
+  }
+
   @override
 
 
   Widget build(BuildContext context) {
-    Widget activeScreen =  const CategoriesScreen();
+    Widget activeScreen =   CategoriesScreen(onToggleFavourite: toggleMealFavouriteStatus,);
     var activeScreenTitle = 'Categories';
 
     if(selectedPageIndex==1){
-      activeScreen =  const MealsScreen(meals: []);
+      activeScreen =   MealsScreen(meals: _favouriteMeals, onToggleFavourite: toggleMealFavouriteStatus,);
       activeScreenTitle = 'Favourites';
     }
     return Scaffold(
       appBar: AppBar(
         title: Text(activeScreenTitle),
       ),
-
+      drawer: MainDrawer(onSeletScreen: _setScreen,),
       body: activeScreen,
 
       bottomNavigationBar: BottomNavigationBar(
