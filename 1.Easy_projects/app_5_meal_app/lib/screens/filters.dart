@@ -9,7 +9,9 @@ enum Filter{  // enum is a special data type that enables for a variable to be a
 }
 
 class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key});
+  const FilterScreen({super.key,required this.currentFilters});
+
+  final Map<Filter,bool>currentFilters;
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();
@@ -21,6 +23,17 @@ class _FilterScreenState extends State<FilterScreen> {
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
+
+  @override
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _glutenFreeFilterSet = widget.currentFilters[Filter.GlutenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilters[Filter.LactoseFree]!;
+    _vegetarianFilterSet = widget.currentFilters[Filter.Vegetarian]!;
+    _veganFilterSet = widget.currentFilters[Filter.Vegan]!;
+  }
 
   @override
   Widget build(BuildContext context) {
