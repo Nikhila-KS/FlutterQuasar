@@ -1,4 +1,5 @@
-import 'package:app_4_meal_app/data/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:app_4_meal_app/providers/meals_provider.dart';
 import 'package:app_4_meal_app/models/meal.dart';
 import 'package:app_4_meal_app/screens/categories.dart';
 import 'package:app_4_meal_app/screens/filters.dart';
@@ -14,14 +15,14 @@ const kInitialFilter={
   Filter.Vegan : false,
 };
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget { // as using riverpod we changed the stateful widget to consumer stateful widget
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int selectedPageIndex = 0;
   final List<Meal> _favouriteMeals = [];
 
@@ -80,7 +81,12 @@ class _TabsScreenState extends State<TabsScreen> {
 
 
   Widget build(BuildContext context) {
-    final availableMeals = dummyMeals.where((meal){
+    final meals=ref.watch(mealsProvider); 
+    // we set up a listener to the provider, build will be called whenever the value of the provider changes
+    // read and watch are the same but watch is used when we want to rebuild the widget when the value changes
+    // watch should be used more often as it is more efficient
+    // these functions are provided by riverpod
+    final availableMeals =  meals.where((meal){
        if(_selectedFilters[Filter.GlutenFree]! && !meal.isGlutenFree){
          return false;
        }
