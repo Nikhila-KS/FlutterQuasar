@@ -60,7 +60,7 @@ class MainDrawer extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,fontSize: 24,
                 ),),
               onTap: (){
-                onSeletScreen('Filters');
+                onSeletScreen('filters');
               },
             ),
 
