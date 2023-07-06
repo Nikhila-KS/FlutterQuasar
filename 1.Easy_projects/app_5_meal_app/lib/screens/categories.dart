@@ -6,9 +6,9 @@ import 'package:app_4_meal_app/widgets/category_grid_item.dart';
 import 'package:app_4_meal_app/data/dummy_data.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key, required this.onToggleFavourite, required this.availableMeals});
+  const CategoriesScreen({super.key, required this.availableMeals});
 
-  final void Function(Meal meal) onToggleFavourite;
+  // final void Function(Meal meal) onToggleFavourite;  //without riverpod we needed to pass the function down the tree
   final List<Meal> availableMeals;
 
   void _selectCategory(BuildContext context, Category category) {
@@ -18,7 +18,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) =>  MealsScreen(  // it acts as a loop and returns a list of meals
           title:  category.title, 
           meals:filteredMeals,
-          onToggleFavourite: onToggleFavourite,
+          // onToggleFavourite: onToggleFavourite, //without riverpod we needed to pass the function down the tree
           ),
       ),
     );
