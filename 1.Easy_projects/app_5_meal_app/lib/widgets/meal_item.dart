@@ -33,13 +33,16 @@ class MealItem extends StatelessWidget {
           children: [
             // first child of stack will be at the bottom
             // so as you move down we see the top most widget
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage), // placeholder means what to show while the image or other content is loading
-              image: NetworkImage(meal.imageUrl),
-              fit: BoxFit.cover, // make sure the image covers the entire card
-              height: 200,
-              width: double.infinity,
-              ), 
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage), // placeholder means what to show while the image or other content is loading
+                image: NetworkImage(meal.imageUrl),
+                fit: BoxFit.cover, // make sure the image covers the entire card
+                height: 200,
+                width: double.infinity,
+                ),
+            ), 
             Positioned(
               bottom: 0,
               right: 0,
