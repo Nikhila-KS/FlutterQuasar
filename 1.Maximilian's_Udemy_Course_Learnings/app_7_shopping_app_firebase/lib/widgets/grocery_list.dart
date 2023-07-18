@@ -25,22 +25,29 @@ class _GroceryListState extends State<GroceryList> {
     _loadItems();
   }
 
-  void _loadItems()async {
-     final url = Uri.https('shopping-list-udemy-95eae-default-rtdb.firebaseio.com','shoppingList-nikki-behappy.json');
+  void _loadItems() async {
+
+    try {
+      final url = Uri.https(
+          'shopping-list-udemy-95eae-default-rtdb.firebaseio.com',
+          'shoppingList-nikki-behappy.json');
       final response = await http.get(url);
 
-      if(response.statusCode >= 400){
+      if (response.body == 'null') {
         setState(() {
-          _error = 'Could not load items.Please try again later.';
+          _isLoading = false;
         });
         return;
       }
 
-      final Map<String,dynamic> listData= json.decode(response.body);
+      final Map<String, dynamic> listData = json.decode(response.body);
       final List<GroceryItem> firbaseloadedItems = [];
 
-      for(final items in listData.entries){
-        final categoryy = categories.entries.firstWhere((element) => element.value.title == items.value['category']).value;
+      for (final items in listData.entries) {
+        final categoryy = categories.entries
+            .firstWhere(
+                (element) => element.value.title == items.value['category'])
+            .value;
         firbaseloadedItems.add(GroceryItem(
           id: items.key,
           name: items.value['name'],
@@ -49,39 +56,54 @@ class _GroceryListState extends State<GroceryList> {
         ));
       }
       setState(() {
-        _groceryItems= firbaseloadedItems;
-        _isLoading=false;
+        _groceryItems = firbaseloadedItems;
+        _isLoading = false;
       });
-    
 
-      print("========================================================================");
+      print(
+          "========================================================================");
       print(response.body);
-      print("========================================================================");
+      print(
+          "========================================================================");
+    } catch (error) {
 
+        setState(() {
+          _error = 'Something went wrong.Please try again later.';
+        });
+
+    }
   }
 
   void _addItem() async {
+    final newItem = await Navigator.of(context).push<GroceryItem>(
+        MaterialPageRoute(builder: (ctx) => const NewItem()));
 
-     final newItem = await Navigator.of(context).push<GroceryItem>(
-        MaterialPageRoute(builder: (ctx) => const NewItem())
-      );
+    if (newItem == null) {
+      return;
+    }
 
-      if(newItem==null){
-        return;
-      }
+    setState(() {
+      _groceryItems.add(newItem);
+    });
 
-      setState(() {
-        _groceryItems.add(newItem);
-      });
-      
-
-    //  _loadItems();   
+    //  _loadItems();
   }
 
-  void removeItem(GroceryItem item){
+  void removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
+    final url = Uri.https(
+        'shopping-list-udemy-95eae-default-rtdb.firebaseio.com',
+        'shoppingList-nikki-behappy/${item.id}.json');
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
   }
 
   @override
@@ -90,18 +112,17 @@ class _GroceryListState extends State<GroceryList> {
       child: Text('No items yet!'),
     );
 
-    if(_isLoading){
+    if (_isLoading) {
       content = const Center(
         child: CircularProgressIndicator(),
       );
     }
 
-    if(_groceryItems.isNotEmpty){
-
-      content= ListView.builder(
+    if (_groceryItems.isNotEmpty) {
+      content = ListView.builder(
         itemCount: _groceryItems.length,
         itemBuilder: (ctx, index) => Dismissible(
-          key : ValueKey(_groceryItems[index].id),
+          key: ValueKey(_groceryItems[index].id),
           onDismissed: (direction) {
             removeItem(_groceryItems[index]);
           },
@@ -110,7 +131,7 @@ class _GroceryListState extends State<GroceryList> {
               height: 20,
               width: 20,
               color: _groceryItems[index].category.color,
-        
+
               // decoration:  BoxDecoration(
               //   color: groceryItems[index].category.color,
               //   borderRadius: const BorderRadius.all(Radius.circular(50)),
@@ -124,10 +145,9 @@ class _GroceryListState extends State<GroceryList> {
           ),
         ),
       );
-
     }
 
-    if(_error != null){
+    if (_error != null) {
       content = Center(
         child: Text(_error!),
       );
