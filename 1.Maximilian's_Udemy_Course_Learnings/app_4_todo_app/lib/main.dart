@@ -8,11 +8,11 @@ void main() {
   // numbers = [4, 5, 6];
   numbers.add(4);
 
-  runApp(const App());
+  runApp(const MyApp());
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
