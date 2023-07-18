@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:app_6_flutter_forms/data/categories.dart';
 import 'package:app_6_flutter_forms/models/categories.dart';
-import 'package:app_6_flutter_forms/models/grocery_item.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+
+import '../models/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -14,6 +19,7 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  var _isSending = false;
   var _itemName = '';
   var enteredQuantity = 1;
   var _selectedCategory = categories[Categories.fruit]!;
@@ -21,11 +27,39 @@ class _NewItemState extends State<NewItem> {
   // difference between gloabal key and value key is that global key is used to access the state of the widget and value key is used to access the widget itself
   // the internal structure is not rebuild when the key is changed if global key is used
 
-  void _saveItem() {
+  void _saveItem() async{
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
-      Navigator.of(context).pop(GroceryItem(
-          id: DateTime.now().toString(), 
+      setState(() {
+        _isSending = true;
+      });
+      final url = Uri.https('shopping-list-udemy-95eae-default-rtdb.firebaseio.com','shoppingList-nikki-behappy.json');
+       final response = await http.post(
+        url,
+        headers: {
+          'Content-Type' : 'application/json',
+        },
+        body: json.encode(
+          {
+          'name' : _itemName, 
+          'quantity' : enteredQuantity, 
+          'category' : _selectedCategory.title,
+          }
+        ),
+        );
+
+        print(response.body);
+        print(response.statusCode);
+        if(response.statusCode >= 400){
+          return;
+        }
+        // Navigator.of(context).pop();
+
+        final Map<String, dynamic> resData = json.decode(response.body);
+
+      Navigator.of(context).pop(
+        GroceryItem(
+          id: resData['name'], 
           name: _itemName, 
           quantity: enteredQuantity, 
           category: _selectedCategory,
@@ -135,7 +169,7 @@ class _NewItemState extends State<NewItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                      onPressed: () {
+                      onPressed: _isSending? null : () {
                         _formkey.currentState!.reset();
                       },
                       child: const Text('Reset')),
@@ -143,8 +177,10 @@ class _NewItemState extends State<NewItem> {
                     width: 10,
                   ),
                   ElevatedButton(
-                    onPressed: _saveItem,
-                    child: const Text('Add Item'),
+                    onPressed: _isSending? null: _saveItem,
+                    child: _isSending
+                    ? const SizedBox(height: 16,width: 16,child: CircularProgressIndicator()) 
+                    :const Text('Add Item'),
                   ),
                 ],
               ),

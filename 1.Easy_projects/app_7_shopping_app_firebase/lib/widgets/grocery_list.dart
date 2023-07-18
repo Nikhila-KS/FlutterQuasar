@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:app_6_flutter_forms/data/categories.dart';
 import 'package:app_6_flutter_forms/models/grocery_item.dart';
 import 'package:app_6_flutter_forms/widgets/new_item.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -10,18 +14,68 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  final List<GroceryItem> _groceryItems = [];
+  List<GroceryItem> _groceryItems = [];
+  var _isLoading = true;
+  String? _error;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadItems();
+  }
+
+  void _loadItems()async {
+     final url = Uri.https('shopping-list-udemy-95eae-default-rtdb.firebaseio.com','shoppingList-nikki-behappy.json');
+      final response = await http.get(url);
+
+      if(response.statusCode >= 400){
+        setState(() {
+          _error = 'Could not load items.Please try again later.';
+        });
+        return;
+      }
+
+      final Map<String,dynamic> listData= json.decode(response.body);
+      final List<GroceryItem> firbaseloadedItems = [];
+
+      for(final items in listData.entries){
+        final categoryy = categories.entries.firstWhere((element) => element.value.title == items.value['category']).value;
+        firbaseloadedItems.add(GroceryItem(
+          id: items.key,
+          name: items.value['name'],
+          quantity: items.value['quantity'],
+          category: categoryy,
+        ));
+      }
+      setState(() {
+        _groceryItems= firbaseloadedItems;
+        _isLoading=false;
+      });
+    
+
+      print("========================================================================");
+      print(response.body);
+      print("========================================================================");
+
+  }
 
   void _addItem() async {
-    final newItem = await Navigator.of(context).push<GroceryItem>(
-        MaterialPageRoute(builder: (ctx) => const NewItem())
-        );
 
-        if(newItem==null ) return;
-        setState(() {
-          _groceryItems.add(newItem);
-        });
+     final newItem = await Navigator.of(context).push<GroceryItem>(
+        MaterialPageRoute(builder: (ctx) => const NewItem())
+      );
+
+      if(newItem==null){
+        return;
+      }
+
+      setState(() {
+        _groceryItems.add(newItem);
+      });
+      
+
+    //  _loadItems();   
   }
 
   void removeItem(GroceryItem item){
@@ -35,6 +89,12 @@ class _GroceryListState extends State<GroceryList> {
     Widget content = const Center(
       child: Text('No items yet!'),
     );
+
+    if(_isLoading){
+      content = const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     if(_groceryItems.isNotEmpty){
 
@@ -65,6 +125,12 @@ class _GroceryListState extends State<GroceryList> {
         ),
       );
 
+    }
+
+    if(_error != null){
+      content = Center(
+        child: Text(_error!),
+      );
     }
 
     return Scaffold(
