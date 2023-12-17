@@ -16,10 +16,13 @@ class NewItem extends StatefulWidget {
 class _NewItemState extends State<NewItem> {
   var _itemName = '';
   var enteredQuantity = 1;
-  var _selectedCategory = categories[Categories.fruit]!;
+  var _selectedCategory = categories[Categories.fruit]!; // ! is used to tell that it is not null
   final _formkey = GlobalKey<FormState>();
-  // difference between gloabal key and value key is that global key is used to access the state of the widget and value key is used to access the widget itself
-  // the internal structure is not rebuild when the key is changed if global key is used
+  // difference between gloabal key and value key is that global key is used to access the state
+  // of the widget and value key is used to access the widget itself
+  // the internal structure is not rebuild when the key is changed if global key is 
+  //use of form key is to access the state of the form
+  //use of global key is to access the state of the widget
 
   void _saveItem() {
     if (_formkey.currentState!.validate()) {

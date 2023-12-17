@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Categories{
+enum Categories{  // enum is used to create a list of constants,, enum and list are different in the sense that enum is a constant list but list is not a constant list
   vegetables,
   fruit,
   meat,

@@ -6,7 +6,7 @@ class GroceryItem{
   final int quantity;
   final Category category;
 
-  const GroceryItem({
+  const GroceryItem({ // constructor
     required this.id,
     required this.name,
     required this.quantity,

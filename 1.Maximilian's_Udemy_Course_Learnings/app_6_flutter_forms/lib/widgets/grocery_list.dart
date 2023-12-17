@@ -18,7 +18,8 @@ class _GroceryListState extends State<GroceryList> {
         MaterialPageRoute(builder: (ctx) => const NewItem())
         );
 
-        if(newItem==null ) return;
+        if(newItem==null ) return; // user pressed back button or error
+        
         setState(() {
           _groceryItems.add(newItem);
         });

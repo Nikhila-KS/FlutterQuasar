@@ -16,7 +16,8 @@ class Quiz extends StatefulWidget{
 class _QuizState extends State<Quiz>{
   Widget? activeScreen;
   // var activeScreen='startscreen'; // another way to do it
-  List<String> ans=[];
+  List<String> ans=[];  
+  
   @override
   void initState() {
     activeScreen=  Startscreen(Switchscreen);
@@ -30,7 +31,7 @@ class _QuizState extends State<Quiz>{
     });
   }
 
-  void RestartQuiz(){
+  void RestartQuiz(){  // this function is passed to the constructor of ResultScreen
     activeScreen=  Startscreen(Switchscreen);
     // activeScreen='startscreen';  // another way to do it
     setState(() { 
@@ -38,7 +39,7 @@ class _QuizState extends State<Quiz>{
     });
   }
 
-  void onChoose(String answer){
+  void onChoose(String answer){  // this function is passed to the constructor of QuestionScreen
     ans.add(answer);
 
     

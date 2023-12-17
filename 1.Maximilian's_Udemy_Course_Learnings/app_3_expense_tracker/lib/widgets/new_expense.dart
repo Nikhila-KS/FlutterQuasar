@@ -39,7 +39,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   void _submitExpenseData(){  // this function is called when the user clicks on the button submit
 
-    final enteredAmound = double.tryParse(_amountcontroller.text);
+    final enteredAmound = double.tryParse(_amountcontroller.text); // to convert the string to double
     final isAmoundInValid = enteredAmound==null || enteredAmound <=0;
     final enteredTitle = _titlecontroller.text;
     if(_titlecontroller.text.trim().isEmpty || isAmoundInValid || _selectedDate==null){
@@ -81,8 +81,8 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboradspacing = MediaQuery.of(context).viewInsets.bottom;
-    return LayoutBuilder(builder: (ctx,constraints){
+    final keyboradspacing = MediaQuery.of(context).viewInsets.bottom; // to get the height of the keyboard
+    return LayoutBuilder(builder: (ctx,constraints){ // to get the height of the screen
       return SizedBox(
       height :double.infinity,
       child: SingleChildScrollView(

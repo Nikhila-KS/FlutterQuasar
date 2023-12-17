@@ -11,9 +11,7 @@ class Expenses extends StatefulWidget {
   State<Expenses> createState() => _ExpensesState();
 }
 
-
 class _ExpensesState extends State<Expenses> {
-
   final List<Expense> registeredExpenses = [
     Expense(
       title: 'udemy course',
@@ -36,8 +34,7 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense e) {
-
-    final eindex= registeredExpenses.indexOf(e);
+    final eindex = registeredExpenses.indexOf(e);
     setState(() {
       registeredExpenses.remove(e);
     });
@@ -51,19 +48,18 @@ class _ExpensesState extends State<Expenses> {
           textColor: Colors.grey.shade200,
           onPressed: () {
             setState(() {
-              registeredExpenses.insert(eindex, e); // to insert the removed expense back to the list in same position
+              registeredExpenses.insert(eindex,
+                  e); // to insert the removed expense back to the list in same position
             });
           },
         ),
-    ),
+      ),
     );
   }
 
   void _openAddExpenseOverlay() {
-    
     showModalBottomSheet(
-      
-      isScrollControlled: true,
+      isScrollControlled: true, 
       // useSafeArea: true, // to make the modal sheet to take the available space but not working now check!!
       context: context,
       builder: ((context) => SizedBox(
@@ -78,13 +74,15 @@ class _ExpensesState extends State<Expenses> {
     final width = MediaQuery.of(context).size.width;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    Widget maincontent = const Center(child: Text('No expense found.Start adding some!'),);
+    Widget maincontent = const Center(
+      child: Text('No expense found.Start adding some!'),
+    );
 
-    if(registeredExpenses.isNotEmpty){
+    if (registeredExpenses.isNotEmpty) {
       maincontent = ExpensesList(
-            expenses: registeredExpenses,
-            onRemoveExpense: _removeExpense,
-          );
+        expenses: registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -97,27 +95,26 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: !isLandscape? Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-
-          Chart(expenses: registeredExpenses),
-          
-          Expanded(
-              child: maincontent,
-          ),
-        ],
-      ) : Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-           Expanded(child: Chart(expenses: registeredExpenses)),
-          
-          Expanded(
-              child: maincontent,
-          ),
-        ],
-      ),
+      body: !isLandscape
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Chart(expenses: registeredExpenses),
+                Expanded(
+                  child: maincontent,
+                ),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(child: Chart(expenses: registeredExpenses)),
+                Expanded(
+                  child: maincontent,
+                ),
+              ],
+            ),
     );
   }
 }
